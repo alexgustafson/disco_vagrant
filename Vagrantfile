@@ -16,7 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         # The url from where the 'config.vm.box' box will be fetched if it
         # doesn't already exist on the user's system.
-        # config.vm.box_url = "http://files.vagrantup.com/lucid64.box"
+        config.vm.box_url = "http://files.vagrantup.com/lucid64.box"
 
         # Create a private network, which allows host-only access to the machine
         # using a specific IP.
@@ -37,7 +37,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         master.vm.provision :puppet do |puppet|
             puppet.manifests_path = "puppetfiles/manifests"
-            puppet.manifest_file  = "puppetfiles/init.pp"
+            puppet.manifest_file  = "init.pp"
             puppet.module_path = "puppetfiles/modules"
             puppet.options = "--verbose --debug"
         end
@@ -45,10 +45,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     "echo disco_node setup"
 
-    config.vm.define "disco_node01" do |node01|
+    config.vm.define "disconode1" do |node01|
 
         node01.vm.box = "disconode1"
-        node01.vm.box_url = "http://files.vagrantup.com/precise32.box"
+        config.vm.box_url = "http://files.vagrantup.com/lucid64.box"
         node01.vm.network "private_network", ip: "192.168.50.10"
         node01.vm.synced_folder "shared_folders/disconode1/data", "/vagrant_data"
         node01.vm.hostname = "disconode1"
@@ -61,7 +61,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         node01.vm.provision :puppet do |puppet|
             puppet.manifests_path = "puppetfiles/manifests"
-            puppet.manifest_file  = "puppetfiles/init.pp"
+            puppet.manifest_file  = "init.pp"
             puppet.module_path = "puppetfiles/modules"
             puppet.options = "--verbose --debug"
         end
