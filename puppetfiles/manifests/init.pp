@@ -40,9 +40,7 @@ class python {
       command => "/usr/bin/sudo pip install virtualenv",
 
     }
-
 }
-
 
 class networking {
     package {
