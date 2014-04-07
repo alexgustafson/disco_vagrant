@@ -15,7 +15,7 @@ class core {
     }
 
     exec { "tmux":
-      command => "/usr/bin/sudo apt-get -y intall tmux"
+      command => "/usr/bin/sudo apt-get -y install tmux"
     }
 
     exec { "erlang":

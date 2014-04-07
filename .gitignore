@@ -1,0 +1,8 @@
+.idea
+env
+atlassian*
+.vagrant
+*~
+*.swp
+.DS_Store
+build
