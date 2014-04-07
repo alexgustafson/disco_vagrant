@@ -26,31 +26,53 @@ def disco_node_1():
 
 def initialize():
     #switch to master
+    print('** switching to discomaster **')
     disco_master()
+
     #do install step 1 on master
-    install_step_01()
-    #switch to node 1
+    try:
+        print('** initial install step 1 on discomaster **')
+        install_step_01()
+    except Exception, e:
+        pass
+
+    #switch to disconode1
+    print('** switching to disconode1 **')
     disco_node_1()
-    #do install step 1 on node 1
-    install_step_01()
+
+    #do install step 1 on disconode1
+    try:
+        print('** initial install step 1 on disconode1 **')
+        install_step_01()
+    except Exception, e:
+        pass
 
     #switch to master
+    print('** switching to discomaster **')
     disco_master()
-    install_step_02()
+    try:
+        print('** initial install step 2 on discomaster **')
+        install_step_02()
+    except Exception, e:
+        pass
 
 
 def install_step_01():
     #copy over custom hosts file so that we dont have to mess with any DNS
+    print('copying hosts file to /etc/hosts')
     put('{0}/hosts'.format(env.local_files), "/etc/hosts", use_sudo=True)
 
     #clone the disco repository
+    print('clone disco repo from github')
     run('git clone {0} {1}'.format(env.disco_repo, env.disco_path))
 
     #make disco
+    print('make disco')
     with cd(env.disco_path):
         run('make')
 
     #add disco command line utility to system path
+    print('add disco command line utility to system path')
     run('ln -s {0} /usr/local/bin'.format(env.disco_absolute_path))
 
 
