@@ -32,7 +32,7 @@ Setup and Installation:
 
     clone this repository
     
-        >> git clone
+        >> git clone https://github.com/alexgustafson/disco_vagrant.git
     
     cd into disco_vagrant
     
