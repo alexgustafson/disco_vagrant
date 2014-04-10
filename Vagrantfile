@@ -37,7 +37,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         discomaster.vm.provision :puppet do |puppet|
      		puppet.manifests_path = "puppetfiles/manifests"
      		puppet.manifest_file  = "init.pp"
-     		puppet.module_path = "puppetfiles/modules"
      		puppet.options = "--verbose --debug"
    	    end
 
@@ -56,7 +55,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         disconode1.vm.provision :puppet do |puppet|
      		puppet.manifests_path = "puppetfiles/manifests"
      		puppet.manifest_file  = "init.pp"
-     		puppet.module_path = "puppetfiles/modules"
      		puppet.options = "--verbose --debug"
    	    end
 
