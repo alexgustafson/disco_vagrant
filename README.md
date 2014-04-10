@@ -50,17 +50,17 @@ Setup and Installation:
     
         >> fab install_step_01
     
-        generate the erlang cookie, the ssh key, copy the key from discomaster to disconode1
+    generate the erlang cookie, the ssh key, copy the key from discomaster to disconode1
         
-            >> fab install_step_02
+        >> fab install_step_02
         
-        should be runnable
+    should be runnable
         
-            >> fab start
+        >> fab start
         
-        stop disco when you are finished
+    stop disco when you are finished
         
-            >> fab stop
+        >> fab stop
 
 
 
