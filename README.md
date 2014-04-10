@@ -1,5 +1,5 @@
-disco_vagrant
-=============
+Disco on Vagrant
+================
 
 Dependencies:
 
