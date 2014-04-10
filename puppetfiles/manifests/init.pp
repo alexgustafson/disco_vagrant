@@ -25,6 +25,11 @@ class core {
     exec { "libcmph-dev":
       command => "/usr/bin/sudo apt-get -y install libcmph-dev"
     }
+
+    exec { "openssh-client-server":
+      command => "/usr/bin/sudo apt-get -y install openssh-server openssh-client"
+    }
+
 }
 
 class python {

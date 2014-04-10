@@ -27,8 +27,6 @@ def install_step_01():
     elif env.host_string in env.roledefs['nodes']:
         put('{0}/hosts'.format(NODE01_TEMPLATE_FILES), "/etc/hosts", use_sudo=True)
 
-    sudo('apt-get install openssh-client')
-    sudo('apt-get install openssh-server')
 
     #clone the disco repository
     print('clone disco repo from github')
@@ -83,7 +81,7 @@ def install_step_02():
 @roles('master')
 def start():
     with cd(DISCO_RELATIVE_PATH):
-        sudo('bin/disco nodaemon') # TODO : once setup if finished change this to make disco a deamon
+        sudo('bin/disco nodaemon') # TODO : once setup if correct change this to make disco a deamon
 
 @roles('master')
 def stop():
