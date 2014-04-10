@@ -30,15 +30,15 @@ Dependencies:
 
 Setup and Installation:
 
- - clone this repository
+clone this repository
 
     >> git clone
 
- - cd into disco_vagrant
+cd into disco_vagrant
 
     >> cd disco_vagrant
 
- - build the vagrant vms for discomaster and disconode1
+build the vagrant vms for discomaster and disconode1
 
     >> vagrant up
 
@@ -46,19 +46,19 @@ Setup and Installation:
     configure the 2 vagrant environments. After this command the 2 vagrant
     boxes will be running in the background.
 
- - clone and make disco on the master and node
+clone and make disco on the master and node
 
     >> fab install_step_01
 
- - generate the erlang cookie, the ssh key, copy the key from discomaster to disconode1
+generate the erlang cookie, the ssh key, copy the key from discomaster to disconode1
 
     >> fab install_step_02
 
- - should be runnable
+should be runnable
 
     >> fab start
 
- - stop disco when you are finished
+stop disco when you are finished
 
     >> fab stop
 
