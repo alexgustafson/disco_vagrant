@@ -1,6 +1,11 @@
 Disco on Vagrant
 ================
 
+Warning:
+
+    this is not working yet. It will build the boxes, get disco, make and install everything, get the disco master
+    running. But it is not yet connecting to the node. Permissions or connectivity problems exist.
+
 Dependencies:
 
     VirtualBox
