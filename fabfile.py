@@ -6,8 +6,8 @@ env.roledefs = {
     'nodes': ['192.168.50.10']
 }
 
-env.user = 'vagrant'
-env.password = "vagrant"
+env.user = 'root'
+env.password = "ska"
 DISCO_REPO = 'https://github.com/discoproject/disco.git'
 DISCO_REPO_BRANCH = 'master'
 DISCO_RELATIVE_PATH = 'disco'
@@ -19,6 +19,31 @@ NODE01_TEMPLATE_FILES = 'templates/disconode1'
 
 @roles('master', 'nodes')
 def install_step_01():
+
+
+    #setup ssh
+    #run('echo root:ska | sudo chpasswd')
+    try:
+        run('mkdir -p /var/run/sshd')
+    except:
+        pass
+
+    #passwordless login for root
+    run("mkdir -p /root/.ssh")
+    run("ssh-keygen -N '' -f /root/.ssh/id_dsa")
+    run("cat /root/.ssh/id_dsa.pub >> /root/.ssh/authorized_keys")
+    run('echo -n "localhost " > /root/.ssh/known_hosts')
+    run('cat /etc/ssh/ssh_host_rsa_key.pub >> /root/.ssh/known_hosts')
+
+    #passwordless login for disco
+    run('adduser --system disco --shell /bin/sh')
+    run('mkdir -p /home/disco/.ssh')
+    run("ssh-keygen -N '' -f /home/disco/.ssh/id_dsa")
+    run('cat /home/disco/.ssh/id_dsa.pub >> /home/disco/.ssh/authorized_keys')
+    run('echo -n "localhost " > /home/disco/.ssh/known_hosts')
+    run('cat /etc/ssh/ssh_host_rsa_key.pub >> /home/disco/.ssh/known_hosts')
+    run('chown disco -R /home/disco/.ssh')
+
 
     #copy over custom hosts file so that we dont have to mess with any DNS
     print('copying hosts file to /etc/hosts')
@@ -39,34 +64,41 @@ def install_step_01():
         #if we're on the master node, do normal make install
         with cd(DISCO_RELATIVE_PATH):
             try:
-                sudo('make install')
+                run('git checkout tags/0.5')
+                run('make')
+                run('make install')
             except:
                 pass
     else:
         #if we're on a node, do make install-node
         with cd(DISCO_RELATIVE_PATH):
             try:
-                sudo('make install-node')
+                run('make')
+                run('make install-node')
             except:
                 pass
 
+    run('chown -R disco /usr/local/var/disco')
+
     #add disco command line utility to system path
+    '''
     print('add disco command line utility to system path')
     try:
         sudo('ln -s {0} /usr/local/bin'.format(DISCO_ABSOLUTE_PATH))
     except:
         pass
+    '''
 
 @roles('master', 'nodes')
 def install_step_02():
     if env.host_string in env.roledefs['master']:
         #start disco quickly to generate the erlang cookie ( is this right? )
         with cd(DISCO_RELATIVE_PATH):
-            sudo('bin/disco start')
+            run('bin/disco start')
             sleep(1)
-            sudo('bin/disco stop')
+            run('bin/disco stop')
 
-        run('ssh vagrant@disconode1')
+        run('ssh disco@disconode1')
         try:
             run("ssh-keygen -N '' -f ~/.ssh/id_dsa")
             run("ssh-copy-id disconode1")
@@ -81,9 +113,9 @@ def install_step_02():
 @roles('master')
 def start():
     with cd(DISCO_RELATIVE_PATH):
-        sudo('bin/disco nodaemon') # TODO : once setup if correct change this to make disco a deamon
+        run('bin/disco nodaemon') # TODO : once setup if correct change this to make disco a deamon
 
 @roles('master')
 def stop():
     with cd(DISCO_RELATIVE_PATH):
-        sudo('bin/disco stop')
+        run('bin/disco stop')
