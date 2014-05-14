@@ -1,6 +1,6 @@
 127.0.0.1       localhost
-127.0.1.1 discomaster discomaster
-192.168.50.10 disconode1 disconode1
+192.168.50.4  discomaster discomaster
+192.168.50.10 disconode1  disconode1
 
 # The following lines are desirable for IPv6 capable hosts
 ::1     ip6-localhost ip6-loopback
