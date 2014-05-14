@@ -11,7 +11,7 @@ env.password = "ska"
 DISCO_REPO = 'https://github.com/discoproject/disco.git'
 DISCO_REPO_BRANCH = 'master'
 DISCO_RELATIVE_PATH = 'disco'
-DISCO_ABSOLUTE_PATH = '/home/vagrant/disco'
+DISCO_ABSOLUTE_PATH = '/home/disco'
 
 MASTER_TEMPLATE_FILES = 'templates/discomaster'
 NODE01_TEMPLATE_FILES = 'templates/disconode1'
