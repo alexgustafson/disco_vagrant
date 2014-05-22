@@ -45,11 +45,17 @@ Setup and Installation:
     
     build the vagrant vms for discomaster and disconode1
     
+        if you have previously built virtual boxes running, you may want
+        to Machine->Close->Power Off and then Machine->Remove->remove all files
+        before making new virtual boxes in this next step
+    
         >> vagrant up
     
         this will take a while, vagrant needs to download the basic box and
         configure the 2 vagrant environments. After this command the 2 vagrant
         boxes will be running in the background.
+        
+        test by doing 'vagrant ssh discomaster' and then 'exit'
     
     generate the erlang cookie, the ssh key, copy the key from discomaster to disconode1
     
