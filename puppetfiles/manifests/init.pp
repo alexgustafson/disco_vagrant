@@ -18,9 +18,10 @@ class core {
       command => "/usr/bin/sudo apt-get -y install tmux"
     }
 
-    exec { "erlang":
-      command => "/usr/bin/sudo apt-get -y install erlang"
-    }
+# erlang already installed during vagrant up
+#   exec { "erlang":
+#     command => "/usr/bin/sudo apt-get -y install erlang"
+#   }
 
     exec { "libcmph-dev":
       command => "/usr/bin/sudo apt-get -y install libcmph-dev"
