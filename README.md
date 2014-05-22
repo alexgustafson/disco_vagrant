@@ -59,6 +59,10 @@ Setup and Installation:
         
         >> fab install_step_02
         
+        >> fab install_step_03
+        
+        >> fab install_step_04
+        
     should be runnable
         
         >> fab start
