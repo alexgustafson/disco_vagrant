@@ -19,7 +19,7 @@ NODE01_TEMPLATE_FILES = 'templates/disconode1'
 # script asks for vagrant password - it is 'vagrant'
 # keep in mind that the default user is vagrant within this script
 
-env.no keys = True # discourages use of $HOME/.ssh/ key files
+env.no_keys = True # discourages use of $HOME/.ssh/ key files
 env.user = 'vagrant' # This is the default username anyway
 
 @roles('master', 'nodes')
@@ -39,9 +39,9 @@ def install_step_01():
 def install_step_02():
 
 # copy the public keys in one system to the other system
-  if env.host_string in env.roledefs['master']
+  if env.host_string in env.roledefs['master']:
     run("ssh-copy-id -i ~/.ssh/id_ecdsa.pub vagrant@disconode1")
-  else
+  else:
     run("ssh-copy-id -i ~/.ssh/id_ecdsa.pub vagrant@discomaster")
     
 @roles('master', 'nodes')
