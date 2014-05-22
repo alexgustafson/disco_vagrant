@@ -51,9 +51,9 @@ Setup and Installation:
         configure the 2 vagrant environments. After this command the 2 vagrant
         boxes will be running in the background.
     
-        >> fab install_step_01
-    
     generate the erlang cookie, the ssh key, copy the key from discomaster to disconode1
+    
+        >> fab install_step_01
         
         >> fab install_step_02
         
