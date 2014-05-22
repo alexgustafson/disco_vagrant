@@ -24,19 +24,16 @@ env.user = 'vagrant' # This is the default username anyway
 
 @roles('master', 'nodes')
 def install_step_01():
-
-
-    #setup ssh
  
-    #create keys for vagrant user
-    run("ssh-keygen -t ecdsa -N '' -f /home/vagrant/.ssh/id_ecdsa")
+  #create keys for vagrant user
+  run("ssh-keygen -t ecdsa -N '' -f /home/vagrant/.ssh/id_ecdsa")
 
-    #copy over custom hosts file so that we dont have to mess with any DNS
-    print('copying hosts file to /etc/hosts')
-    if env.host_string in env.roledefs['master']:
-        put('{0}/hosts'.format(MASTER_TEMPLATE_FILES), "/etc/hosts", use_sudo=True)
-    elif env.host_string in env.roledefs['nodes']:
-        put('{0}/hosts'.format(NODE01_TEMPLATE_FILES), "/etc/hosts", use_sudo=True)
+  #copy over custom hosts file so that we dont have to mess with any DNS
+  print('copying hosts file to /etc/hosts')
+  if env.host_string in env.roledefs['master']:
+    put('{0}/hosts'.format(MASTER_TEMPLATE_FILES), "/etc/hosts", use_sudo=True)
+  elif env.host_string in env.roledefs['nodes']:
+    put('{0}/hosts'.format(NODE01_TEMPLATE_FILES), "/etc/hosts", use_sudo=True)
 
 @roles('master', 'nodes')
 def install_step_02():
@@ -50,40 +47,41 @@ def install_step_02():
 @roles('master', 'nodes')
 def install_step_03():
 
-    run("mkdir -p {0}".format(DISCO_HOME))
+  run("mkdir -p {0}".format(DISCO_HOME))
   
-    #clone the disco repository
-    print('clone disco repo from github')
-    try:
-      run('git clone {0} {1}'.format(DISCO_REPO, DISCO_HOME))
-    except:
-      pass
+  #clone the disco repository
+  print('clone disco repo from github')
+  try:
+    run('git clone {0} {1}'.format(DISCO_REPO, DISCO_HOME))
+  except:
+    pass
 
-    if env.host_string in env.roledefs['master']:
-      #if we're on the master node, do normal make install
-      with cd(DISCO_HOME):
+  if env.host_string in env.roledefs['master']:
+    #if we're on the master node, do normal make install
+    with cd(DISCO_HOME):
+      try:
+        run('git checkout tags/0.5')
+        run('make')
+        run('sudo make install')
+      except:
+        pass
+  else:
+    #if we're on a node, do make install-node
+    with cd(DISCO_HOME):
+      try:
+        run('make')
+        run('sudo make install-node')
+        print('add disco command line utilities to system path')
         try:
-          run('git checkout tags/0.5')
-          run('make')
-          run('sudo make install')
+          sudo('ln -s {0}/bin/disco /usr/local/bin'.format(DISCO_HOME))
+          sudo('ln -s {0}/bin/ddfs  /usr/local/bin'.format(DISCO_HOME))
         except:
           pass
-    else:
-      #if we're on a node, do make install-node
-      with cd(DISCO_HOME):
-        try:
-          run('make')
-          run('sudo make install-node')
-          print('add disco command line utilities to system path')
-          try:
-            sudo('ln -s {0}/bin/disco /usr/local/bin'.format(DISCO_HOME))
-            sudo('ln -s {0}/bin/ddfs  /usr/local/bin'.format(DISCO_HOME))
-          except:
-            pass
+      except:
+        pass
 
-    run('sudo chown -R vagrant:vagrant /usr/local/bin')
-    run('sudo chown -R vagrant:vagrant /usr/local/var')
-
+  run('sudo chown -R vagrant:vagrant /usr/local/bin')
+  run('sudo chown -R vagrant:vagrant /usr/local/var')
 
 @roles('master', 'nodes')
 def install_step_04():
@@ -93,11 +91,11 @@ def install_step_04():
       run('bin/disco start')
       sleep(1)
       run('bin/disco stop')
-
-    try:
-      run("scp /home/vagrant/.erlang.cookie vagrant@disconode1:/home/vagrant")
-    except:
-      pass
+      # copy discomaster .erlang.cookie to disconode1
+      try:
+        run("scp /home/vagrant/.erlang.cookie vagrant@disconode1:/home/vagrant")
+      except:
+        pass
 
 @roles('master')
 def start():
