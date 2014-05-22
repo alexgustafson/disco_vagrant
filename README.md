@@ -59,6 +59,9 @@ Setup and Installation:
     
     generate the erlang cookie, the ssh key, copy the key from discomaster to disconode1
     
+        if any of these steps hang and fail, just do it over again..
+        keep your eyes open - password 'vagrant' required and 'yes' required occasionally.
+    
         >> fab install_step_01
         
         >> fab install_step_02
