@@ -46,7 +46,7 @@ Setup and Installation:
     build the vagrant vms for discomaster and disconode1
     
         if you have previously built virtual boxes running, you may want
-        to Machine->Close->Power Off and then Machine->Remove->remove all files
+        to 'vagrant destroy'
         before making new virtual boxes in this next step
     
         >> vagrant up
