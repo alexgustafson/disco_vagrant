@@ -9,7 +9,7 @@ env.roledefs = {
 DISCO_REPO = 'https://github.com/discoproject/disco.git'
 DISCO_REPO_BRANCH = 'master'
 DISCO_RELATIVE_PATH = 'disco'
-DISCO_HOME = '/home/vagrant/disco'
+DISCO_BUILD = '/home/vagrant/disco'
 DISCO_MASTER_HOST = 'discomaster'
 DISCO_PORT = 8989
 
@@ -47,47 +47,45 @@ def install_step_02():
 @roles('master', 'nodes')
 def install_step_03():
 
-  run("mkdir -p {0}".format(DISCO_HOME))
+  run("mkdir -p {0}".format(DISCO_BUILD))
   
   #clone the disco repository
   print('clone disco repo from github')
   try:
-    run('git clone {0} {1}'.format(DISCO_REPO, DISCO_HOME))
+    run('git clone {0} {1}'.format(DISCO_REPO, DISCO_BUILD))
   except:
     pass
 
+  with cd (DISCO_BUILD):
+    try:
+      run('git checkout tags/0.5.1') # bump from 0.5.0
+      run('make')
+    except:
+      pass
+
   if env.host_string in env.roledefs['master']:
     #if we're on the master node, do normal make install
-    with cd(DISCO_HOME):
+    with cd(DISCO_BUILD):
       try:
-        run('git checkout tags/0.5')
-        run('make')
         run('sudo make install')
       except:
         pass
   else:
     #if we're on a node, do make install-node
-    with cd(DISCO_HOME):
+    with cd(DISCO_BUILD):
       try:
-        run('make')
         run('sudo make install-node')
-        print('add disco command line utilities to system path')
-        try:
-          sudo('ln -s {0}/bin/disco /usr/local/bin'.format(DISCO_HOME))
-          sudo('ln -s {0}/bin/ddfs  /usr/local/bin'.format(DISCO_HOME))
-        except:
-          pass
       except:
         pass
 
-  run('sudo chown -R vagrant:vagrant /usr/local/bin')
-  run('sudo chown -R vagrant:vagrant /usr/local/var')
+  # Need to write in this directory as vagrant user
+  run('sudo chown -R vagrant:vagrant /usr/local/var/disco')
 
 @roles('master', 'nodes')
 def install_step_04():
   if env.host_string in env.roledefs['master']:
     #start disco quickly to generate the erlang cookie ( is this right? )
-    with cd(DISCO_HOME):
+    with cd(DISCO_BUILD):
       run('bin/disco start')
       sleep(1)
       run('bin/disco stop')
@@ -99,10 +97,10 @@ def install_step_04():
 
 @roles('master')
 def start():
-  with cd(DISCO_HOME):
+  with cd(DISCO_BUILD):
     run('bin/disco nodaemon') # TODO : once setup if correct change this to make disco a deamon
 
 @roles('master')
 def stop():
-  with cd(DISCO_HOME):
+  with cd(DISCO_BUILD):
     run('bin/disco stop')
