@@ -1,11 +1,6 @@
 Disco on Vagrant
 ================
 
-Warning:
-
-    this is not working yet. It will build the boxes, get disco, make and install everything, get the disco master
-    running. But it is not yet connecting to the node. Permissions or connectivity problems exist.
-
 Dependencies:
 
     VirtualBox
@@ -18,7 +13,7 @@ Dependencies:
     The Vagrant boxes will only be able to run on a host that has VirtualBox installed.
     
     you need to have Fabric installed in your python environment.
-    If you don't want to install fabric in you system library then
+    If you don't want to install fabric in your system library then
     create a python virtual envelope and install from the requirements
     file.
     
@@ -56,8 +51,9 @@ Setup and Installation:
         boxes will be running in the background.
         
         test by doing 'vagrant ssh discomaster' and then 'exit'
+        *** See also 'SanityTests.txt' document for state at this point ***
     
-    generate the erlang cookie, the ssh key, copy the key from discomaster to disconode1
+    generate the ssh key, copy the key from discomaster to disconode1
     
         if any of these steps hang and fail, just do it over again..
         keep your eyes open - password 'vagrant' required and 'yes' required occasionally.
@@ -70,6 +66,8 @@ Setup and Installation:
  
         >> fab install_step_03
         
+    generate the erlang cookie and copy to disconode1
+        
         >> fab install_step_04
         
     should be runnable
@@ -80,5 +78,5 @@ Setup and Installation:
         
         >> fab stop
 
-
+Better test with results given in 'FinalTest.txt' document
 
