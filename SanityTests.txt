@@ -1,0 +1,74 @@
+Sanity check
+
+Once you have reached this point, sitting on the host machine (you are logged in with your own personal username), in directory disco_vagrant, you should be able to:
+
+Log into either of the virtual machines with ssh, in two different ways:
+
+Using the vagrant helper (no password necessary, courtesy of Vagrant):
+
+              $ vagrant ssh discomaster
+ vagrant $ 
+ vagrant $ exit
+              $
+
+              $ vagrant ssh disconode1
+ vagrant $
+ vagrant $ exit
+              $
+
+Note that you must use either of the virtual machine names.
+
+These WILL NOT work:
+
+  $ vagrant ssh foobar
+  $ vagrant ssh 192.168.50.4
+  $ vagrant ssh vagrant@discomaster
+
+On the host machine, if you do ‘ifconfig’, you should see your local ‘lo’ 127.0.0.1 interface, a number of physical network interfaces unique to your physical machine, and the virtual ethernet interface into your constellation of virtual machines. The virtual interface will look something like:
+
+  $ ifconfig
+…
+…
+vboxnet0: flags…
+              inet 192.168.50.1 net mask 255.255.255.0 broadcast 192.168.50.255
+              ….
+
+At this point in the install process, you will not be able to log into either virtual machine with any of the following commands, but wait till later..
+
+No go - at this time
+
+       $ ssh 192.168.50.4
+
+The reason you cannot log in is because you don’t know the password for ‘user1’ or whatever your host user name is on the virtual machines (you haven’t set it and it isn’t a username)
+
+But, you CAN log in to either machine using the normal ssh - without the vagrant helper
+
+     $ ssh vagrant@192.168.50.4
+vagrant@192.168.50.4’s password:   (it is ‘vagrant’ )
+
+Thus we see that Vagrant, by some magic, has enabled a password-less login to either virtual machine using the ‘vagrant ssh <machinename>’ syntax.
+
+Also, the normal ‘with password’ ssh will work, using the virtual machine IP addresses (because the DNS available from the host machine does not know about discomaster and disconode1 
+
+At this point, you can also 'sudo su' to the root user on either machine (vagrant password not required)
+
+vagrant@discomaster: ~$ sudo su
+root@discomaster:/home/vagrant#
+
+Being root on the virtual machines allows you to make small changes in configuration which are not yet in the Fabric script…
+
+=== Now we move forward with the disco installation using a Fabric script.
+
+=== Once the fab install_step_01 and fab install_step_02 have been completed, it is now possible to log into either virtual machines because their names and IPs have been added to your host’s /etc/hosts file.
+
+    $ ssh vagrant@discomaster
+vagrant@discomaster’s password:        << vagrant as before.
+
+
+Your host DNS still does not know about these names, so the command:
+
+     $ dig discomaster
+
+on your host machine will come back with an IP address far out on the Internet (probably openDNS).
+This is something to keep in mind.
+
