@@ -1,0 +1,93 @@
+vagrant@discomaster:~$ disco nodaemon
+Erlang R16B01 (erts-5.10.2) [source] [async-threads:10] [kernel-poll:true]
+
+Eshell V5.10.2  (abort with ^G)
+(disco_8989_master@discomaster)1> 12:08:27.664 [info] Application lager started on node disco_8989_master@discomaster
+12:08:27.714 [info] Application inets started on node disco_8989_master@discomaster
+12:08:27.717 [info] DISCO BOOTS
+12:08:27.718 [info] Disco proxy disabled
+12:08:27.722 [info] DDFS master starts
+12:08:27.727 [info] Event server starts
+12:08:27.730 [info] Disco config starts
+12:08:27.732 [info] DISCO SERVER STARTS
+12:08:27.733 [info] Fair scheduler starts
+12:08:27.734 [info] Scheduler uses fair policy
+12:08:27.735 [info] Fair scheduler: Fair policy
+12:08:27.738 [info] Config table updated
+12:08:27.755 [info] Starting node "disco_8989_slave" on "localhost" ("localhost")
+12:08:27.770 [info] web server (mochiweb) starts
+12:08:27.772 [info] Application disco started on node disco_8989_master@discomaster
+Host key verification failed.
+12:08:59.770 [info] Connection timed out to "localhost"
+12:09:14.772 [warning] Restarting monitor for "localhost"
+12:09:14.784 [info] Starting node "disco_8989_slave" on "localhost" ("localhost")
+Host key verification failed.
+12:09:18.076 [info] Config table updated
+12:09:46.805 [info] Connection timed out to "localhost"
+
+=== Disco by default assumed one system - named 'localhost'
+=== When you configure two or more systems, 'localhost' must be removed (In GUI config window)
+=== Then discomaster is added (I created it graphically with 0 workers)
+
+12:09:47.218 [info] Config table updated
+12:09:47.227 [info] Starting node "disco_8989_slave" on "discomaster" ("discomaster")
+12:09:47.465 [info] ddfs_node initialized on disco_8989_master@discomaster with volumes: ["vol0"]
+12:09:47.470 [info] ddfs_node starts on disco_8989_master@discomaster
+12:09:47.472 [info] ddfs_node initialized on disco_8989_slave@discomaster with volumes: ["vol0"]
+12:09:47.473 [info] Node started at disco_8989_slave@discomaster (reporting as disco_8989_master@discomaster) on "discomaster"
+12:09:47.476 [info] lock_server starts on disco_8989_slave@discomaster
+12:09:47.482 [info] Tempgc: error listing "/usr/local/var/disco/data/discomaster": {error,enoent}
+12:09:47.482 [info] Tempgc: one pass completed on disco_8989_slave@discomaster
+12:09:47.489 [info] Started ddfs_put at disco_8989_slave@discomaster on port 8990
+12:09:47.490 [info] ddfs_node starts on disco_8989_slave@discomaster
+12:09:47.547 [info] Node started at disco_8989_slave@discomaster (reporting as disco_8989_slave@discomaster) on "discomaster"
+
+=== Here is where disconode1 is added in Gui config. 3 workers are created for this node.
+=== The reason for 0 workers on discomaster and 3 workers on disconode1 was for testing purposes
+===  earlier tests with 3 and 3 workers resulted in all the work being done on discomaster.
+===  I didn't know whether disconode1 was properly installed and configured.
+
+12:10:12.612 [info] Config table updated
+12:10:12.625 [info] Starting node "disco_8989_slave" on "disconode1" ("disconode1")
+12:10:13.013 [info] Creating new root directory "/usr/local/var/disco/ddfs"
+12:10:13.014 [info] ddfs_node initialized on disco_8989_slave@disconode1 with volumes: ["vol0"]
+12:10:13.014 [info] lock_server starts on disco_8989_slave@disconode1
+12:10:13.021 [info] Tempgc: error listing "/usr/local/var/disco/data/disconode1": {error,enoent}
+12:10:13.022 [info] Tempgc: one pass completed on disco_8989_slave@disconode1
+12:10:13.027 [info] Started ddfs_put at disco_8989_slave@disconode1 on port 8990 
+12:10:13.029 [info] Started ddfs_get at disco_8989_slave@disconode1 on port 8989 
+12:10:13.029 [info] ddfs_node starts on disco_8989_slave@disconode1
+12:10:13.088 [info] Node started at disco_8989_slave@disconode1 (reporting as disco_8989_slave@disconode1) on "disconode1"
+
+=== This is the first run of python examples/util/count_words.py
+=== It ran fine according to Disco, but the output was messed up - an initialization somewhere upstream..
+
+12:11:47.963 [info] initialized job "Job@579:201b3:e46fc" with pipeline [{<<"map">>,split},{<<"map_shuffle">>,group_node},{<<"reduce">>,group_all}] and inputs [{0,{data,{0,0,[{<<"http://discoproject.org/media/text/chekhov.txt">>,"discoproject.org"}]}}}]
+12:11:55.175 [info] Job Job@579:201b3:e46fc done, results: [[<<"dir://disconode1/disco/disconode1/4d/Job@579:201b3:e46fc/.disco/reduce-2-1401131515144192.results">>]]
+12:11:55.175 [info] Job has already finished: {gen_server,call,[<0.269.0>,{schedule_local,["disconode1"]},infinity]}
+12:11:55.972 [info] initialized job "Job@579:201bb:ed1c5" with pipeline [{<<"map">>,split},{<<"map_shuffle">>,group_node},{<<"reduce">>,group_all}] and inputs [{0,{data,{0,0,[{<<"http://discoproject.org/media/text/chekhov.txt">>,"discoproject.org"}]}}}]
+
+=== So I ran the count_word.py again - printed long list of 70,000 words and counts.. to the console.
+
+12:12:02.753 [info] Job Job@579:201bb:ed1c5 done, results: [[<<"dir://disconode1/disco/disconode1/34/Job@579:201bb:ed1c5/.disco/reduce-2-1401131522724731.results">>]]
+12:12:02.753 [info] Job has already finished: {gen_server,call,[<0.286.0>,{schedule_local,["disconode1"]},infinity]}
+
+(disco_8989_master@discomaster)1> 12:13:27.751 [info] GC: initializing
+
+=== Shutdown logs ??
+
+12:13:27.778 [info] GC: found 0 blob, 0 tag candidates on disco_8989_slave@discomaster
+12:13:27.779 [info] GC: entering gc phase
+12:13:27.783 [info] GC: found 0 blob, 0 tag candidates on disco_8989_slave@disconode1
+12:13:27.789 [info] Node GC Stats for disco_8989_slave@discomaster: {tag,"kept",{0,0},"deleted",{0,0}}  {blob,"kept",{0,0},"deleted",{0,0}}
+12:13:27.789 [info] GC: 1 nodes pending in gc
+12:13:27.790 [info] Node GC Stats for disco_8989_slave@disconode1: {tag,"kept",{0,0},"deleted",{0,0}}  {blob,"kept",{0,0},"deleted",{0,0}}
+12:13:27.790 [info] GC: Pruning +deleted
+12:13:27.790 [info] Total GC Stats: {tag,"kept",{0,0},"deleted",{0,0}}  {blob,"kept",{0,0},"deleted",{0,0}}
+12:13:27.790 [info] GC: entering rr_blobs phase
+12:13:27.790 [info] GC: sent 0 blob replication requests, entering rr_blobs_wait 
+12:13:27.790 [info] GC: replication ending with Ref 0, TO 0
+12:13:27.790 [info] GC: done with blob replication, replicating tags (0 pending) 
+12:13:27.790 [info] GC: 0 tags updated/replication done, done with GC!
+12:13:27.792 [error] GC: exited with shutdown
+
