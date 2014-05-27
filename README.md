@@ -78,5 +78,5 @@ Setup and Installation:
         
         >> fab stop
 
-Better test with results given in 'FinalTest.txt' document
+Better test with results given in 'run-console.txt' and 'run-log.txt'
 
