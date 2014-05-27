@@ -1,3 +1,7 @@
+Open a new terminal window on host machine. (other window shows real-time logs)
+
+    $ vagrant ssh discomaster
+    
 vagrant@discomaster:~/
 vagrant@discomaster:~/disco$ bin/disco nodaemon
 
